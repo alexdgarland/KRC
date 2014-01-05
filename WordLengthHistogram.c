@@ -1,29 +1,34 @@
 #include <stdio.h>
 
-#define MAX_WORD_LENGTH 10
+#define MAX_WORD_LENGTH 20
+
+#define TRUE 1
+#define FALSE 0
 
 main()
 {
-	int character;
-	int currentLength;
-	int lengths[MAX_WORD_LENGTH + 1];	//assume no words longer than 50 length;
-										//if we were being clever could dynamically resize arrays but this is not super-easy in C
-	int lengthCountTracker;
-	int currentIndex;
+	/* Declare and (where required) initialise variables */
+	int lengths[MAX_WORD_LENGTH];
+	int i;
+	for (i=0; i < MAX_WORD_LENGTH; i++) { lengths[i] = 0; }
+
+	/* Perform the actual work of the program */
+	CaptureInput(lengths);
+	DrawHistogram(lengths);
+}
+
+int CaptureInput(int lengths[])
+{
+	int character, currentLength;
+	character = currentLength = 0;
 	
-	currentLength = 0;
-	for (currentIndex=0; currentIndex <= MAX_WORD_LENGTH; currentIndex++)
+	while (character != EOF)
 	{
-		lengths[currentIndex] = 0;
-	}
-	
-	while ((character = getchar()) != EOF)
-	{
-		if (character == ' ' || character == '\t' || character == '\n')
+		if (isWordMember(character = getchar()) == FALSE)
 		{
 			if (currentLength > 0)
 			{
-				lengths[currentLength]++;
+				lengths[currentLength-1]++;
 				currentLength = 0;
 			}
 		}
@@ -32,26 +37,34 @@ main()
 			currentLength++;
 		}
 	}
+	return 1;
+}
 	
-	//Need to close off word if not already terminated by non-EOF character - little bit hacky, can we improve???
-	if (currentLength > 0)
+int isWordMember(char character)
+{
+	if	(
+		(character >= 'a' && character <= 'z')
+		|| (character >= 'A' && character <= 'Z')
+		|| (character == '\'')
+		)
 	{
-		lengths[currentLength]++;
+		return TRUE;
 	}
+	return FALSE;	
+}
+
+int DrawHistogram(int lengths[])
+{
+	int i, j;
 	
-	/*
-		This could sit in a separate function "Display_Histogram()"
-		but there are issues with passing arrays
-		[ have to use pointer to first element :-(  ]
-	*/
-	for (currentIndex = 1; currentIndex <= MAX_WORD_LENGTH; currentIndex++)
+	for (i = 0; i < MAX_WORD_LENGTH; i++)
 	{
-		printf("%3d ", currentIndex);
-		for (lengthCountTracker = 1; lengthCountTracker <= lengths[currentIndex]; lengthCountTracker++)
+		printf("%3d ", i + 1);
+		for (j = 1; j <= lengths[i]; j++)
 		{
 			printf("|");
 		}
 		printf("\n");
 	}
+	return 1;
 }
-
