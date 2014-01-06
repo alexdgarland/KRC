@@ -3,6 +3,7 @@
 
 int getline(char line[], int maxline);
 void copy(char to[], char from[]);
+void RemoveNewLine(char s[], int lim);
 
 /* print longest input line */
 main()
@@ -23,7 +24,8 @@ main()
 	}
 	if (max > 0)
 	{
-		printf("%s", longest);
+		RemoveNewLine(longest, max);
+		printf("Longest line: %s\\n (length %d)", longest, max);
 	}
 	return 0;
 }
@@ -55,5 +57,18 @@ void copy (char to[], char from[])
 	while ((to[i] = from[i]) != '\0')
 	{
 		++i;
+	}
+}
+
+/* Remove newline from string if present */
+void RemoveNewLine(char s[], int lim)
+{
+	int i;
+	for (i = 0; i < lim; i++)
+	{
+		if (s[i] == '\n')
+		{
+			s[i] = '\0';
+		}
 	}
 }
