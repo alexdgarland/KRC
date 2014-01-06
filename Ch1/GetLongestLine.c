@@ -25,27 +25,30 @@ main()
 	if (max > 0)
 	{
 		RemoveNewLine(longest, max);
-		printf("Longest line: %s\\n (length %d)", longest, max);
+		printf("Longest line: \"%s\\n\" (length %d)", longest, max);
 	}
 	return 0;
 }
 
 /* getline: read a line into s, return length */
-int getline(char s[], int lim)
+int getline(char outputString[], int arrayLimit)
 {
-	int c, i;
+	int character, inputLength, arrayIndex;
 	
-	for (i=0; i<lim-1 && (c=getchar()) != EOF && c!='\n'; ++i)
+	for (arrayIndex=inputLength=0; (character=getchar()) != EOF && character!='\n'; inputLength++)
 	{
-		s[i] = c;
+		if (inputLength < (arrayLimit-1))
+		{
+			outputString[arrayIndex++] = character;
+		}
 	}
-	if (c == '\n')
+	if (character == '\n')
 	{
-		s[i] = c;
-		++i;
+		outputString[arrayIndex++] = character;
+		inputLength++;
 	}
-	s[i] = '\0';
-	return i;
+	outputString[arrayIndex] = '\0';
+	return inputLength;
 }
 
 /* copy: copy 'from' into 'to'; assume 'to' is big enough */
