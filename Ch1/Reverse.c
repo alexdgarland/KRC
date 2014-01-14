@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-# define MAX_LENGTH 1000
+#define MAX_LENGTH 1000
 
 // This program simply reverses all input, one line at a time.
 
