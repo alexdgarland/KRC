@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "Lines.h"
 
 #define CHAR_ARRAY_LENGTH 1000
 #define MIN_LINE_LENGTH_TO_PRINT 81
@@ -17,20 +18,4 @@ main()
 			printf("%s", currentLine);
 		}
 	}
-}
-
-int getline(char outputString[], int arrayLimit)
-{
-	int arrayIndex, character;
-	arrayIndex = 0;
-	while(arrayIndex < (arrayLimit-1) && (character = getchar()) != EOF && character != '\n')
-	{
-		outputString[arrayIndex++] = character;
-	}
-	if (character == '\n')
-	{
-		outputString[arrayIndex++] = character;
-	}
-	outputString[arrayIndex] = '\0';
-	return arrayIndex;
 }
