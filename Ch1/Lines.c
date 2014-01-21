@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+// Generic line/ string handling functions for use in various programs
+
 int getline(char outputString[], int arrayLimit)
 {
         int c, i;
@@ -23,4 +25,12 @@ void init_string(char s[], int arrayLimit)
 	{
 		s[i] = '\0';
 	}
+}
+
+int trimline(char line[], int arrayLength)
+{
+	int arrayPosition;
+	for (arrayPosition = arrayLength - 1; line[arrayPosition] == ' ' || line[arrayPosition] == '\t'; arrayPosition--) { }
+	line[++arrayPosition] = '\0';
+	return arrayPosition;
 }
