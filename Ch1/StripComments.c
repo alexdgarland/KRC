@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include "Lines.h"
 
-#define MAX_LENGTH 1000
 #define TRUE 1
 #define FALSE 0
+#define MAX_LENGTH 1000
+
+void FlipTruthValue(int *CurrentValue);		// forward declaration
 
 int main()
 {
@@ -11,6 +13,7 @@ int main()
 	char currentLine[MAX_LENGTH];	
 	int in_line_comment = FALSE;
 	int in_block_comment = FALSE;
+	int in_quote = FALSE;
 	int i;
 	
 	init_string(currentLine, MAX_LENGTH);
@@ -22,7 +25,7 @@ int main()
 			// Check if already in comment or starting one
 			if ((in_line_comment + in_block_comment) == FALSE)
 			{
-				if(currentLine[i] == '/' && i < (length -1))
+				if(currentLine[i] == '/' && i < (length -1) && (in_quote == FALSE))
 				{
 					switch (currentLine[i+1])
 					{
@@ -37,6 +40,10 @@ int main()
 						default:
 							break;
 					}
+				}
+				else if (currentLine[i] == '"')
+				{
+					FlipTruthValue(&in_quote);
 				}
 			}
 			
@@ -58,4 +65,9 @@ int main()
 			
 		}
 	}
+}
+
+void FlipTruthValue(int *CurrentValue)
+{
+	*CurrentValue = (*CurrentValue ^ TRUE);
 }
