@@ -1,4 +1,4 @@
 KRC
 ===
 
-My hacky attempts to learn C from Kernighan &amp; Richie!  Probably of no interest to anyone but myself :-)
+My solutions to exercises from Kernighan & Richie "The C Programming Language" (Second Edition)
