@@ -35,7 +35,7 @@ int trimline(char line[], int arrayLength)
 	return arrayPosition;
 }
 
-int tabstospaces(char inputline[], int arrayLimit, char outputline[], short tabsize)
+int tabstospaces(char inputline[], int arrayLimit, char outputline[], int maxoutputlength, short tabsize)
 {
 
 	int inputindex;
@@ -43,7 +43,7 @@ int tabstospaces(char inputline[], int arrayLimit, char outputline[], short tabs
 	int numberofspaces;
 	int spaceiterator;
 	
-	for(inputindex = 0; inputindex < arrayLimit; inputindex++)
+	for(inputindex = 0; ((inputindex < arrayLimit) && (outputindex < (maxoutputlength - 1))); inputindex++)
 	{
 		if (inputline[inputindex] == '\t')
 		{		
