@@ -34,3 +34,33 @@ int trimline(char line[], int arrayLength)
 	line[++arrayPosition] = '\0';
 	return arrayPosition;
 }
+
+int tabstospaces(char inputline[], int arrayLimit, char outputline[], short tabsize)
+{
+
+	int inputindex;
+	int outputindex = 0;
+	int numberofspaces;
+	int spaceiterator;
+	
+	for(inputindex = 0; inputindex < arrayLimit; inputindex++)
+	{
+		if (inputline[inputindex] == '\t')
+		{		
+			numberofspaces = tabsize - (inputindex % tabsize);
+			for(spaceiterator = 0; spaceiterator < numberofspaces; spaceiterator++)
+			{
+				outputline[outputindex++] = ' ';
+			}
+		}
+		else
+		{
+			outputline[outputindex++] = inputline[inputindex];
+		}
+	}
+	
+	outputline[outputindex] = '\0';
+	
+	return outputindex;	// return length of output string
+	
+}
