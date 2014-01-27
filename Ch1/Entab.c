@@ -21,8 +21,7 @@ main (int argc, char *argv[])
 	
 	while((length = getline(currentline, MAX_LENGTH)) >0)
 	{
-		tabstospaces(currentline, length, processedline, MAX_LENGTH, tabsize);
+		spacestotabs(currentline, length, processedline, MAX_LENGTH, tabsize);
 		printf(processedline);
 	}
 }
-

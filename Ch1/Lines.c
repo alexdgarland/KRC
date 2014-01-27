@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-// Generic line/ string handling functions for use in various programs
+/*		Generic line/ string handling functions for use in various programs		*/
 
 int getline(char outputString[], int arrayLimit)
 {
@@ -35,32 +35,91 @@ int trimline(char line[], int arrayLength)
 	return arrayPosition;
 }
 
-int tabstospaces(char inputline[], int arrayLimit, char outputline[], int maxoutputlength, short tabsize)
+int tabstospaces(char in_line[], int arrayLimit, char out_line[], int maxlength, short tabsize)
 {
 
-	int inputindex;
-	int outputindex = 0;
+	int in_idx;
+	int out_idx = 0;
 	int numberofspaces;
 	int spaceiterator;
 	
-	for(inputindex = 0; ((inputindex < arrayLimit) && (outputindex < (maxoutputlength - 1))); inputindex++)
+	for(in_idx = 0; ((in_idx < arrayLimit) && (out_idx < (maxlength - 1))); in_idx++)
 	{
-		if (inputline[inputindex] == '\t')
+		if (in_line[in_idx] == '\t')
 		{		
-			numberofspaces = tabsize - (inputindex % tabsize);
+			numberofspaces = tabsize - (in_idx % tabsize);
 			for(spaceiterator = 0; spaceiterator < numberofspaces; spaceiterator++)
 			{
-				outputline[outputindex++] = ' ';
+				out_line[out_idx++] = ' ';
 			}
 		}
 		else
 		{
-			outputline[outputindex++] = inputline[inputindex];
+			out_line[out_idx++] = in_line[in_idx];
 		}
 	}
 	
-	outputline[outputindex] = '\0';
+	out_line[out_idx] = '\0';
 	
-	return outputindex;	// return length of output string
+	return out_idx;	// return length of output string
 	
+}
+
+int spacestotabs(char in_line[], int arrayLimit, char out_line[], int maxlength, short tabsize)
+{
+	
+	int in_idx;
+	int out_idx = 0;
+	char c;
+	int blankstohandle = 0;
+	int spacestoadd, tabstoadd, blankstonexttab;
+	int i;
+	int idx_lastnonblank = 0;
+	
+	for(in_idx = 0; ((in_idx < arrayLimit) && (out_idx < (maxlength - 1))); in_idx++)
+	{
+		c = in_line[in_idx];
+
+		// If run of blanks or the line as a whole ends, output stored blanks in correct format
+		if(blankstohandle > 0 && ((c != '\t' && c != ' ') || (in_idx == (arrayLimit - 1))))
+		{			
+			// Handle (possibly) odd number of columns in first tab
+			blankstonexttab = tabsize - ((idx_lastnonblank + 1) % tabsize);
+			if(blankstohandle >= blankstonexttab)
+			{
+				out_line[out_idx++] = '\t';
+				blankstohandle -= blankstonexttab;
+			}
+		
+			// Deal with rest of required blanks
+			spacestoadd = blankstohandle % tabsize;
+			tabstoadd = blankstohandle / tabsize;
+			for(i = 0; i < tabstoadd; i++) { out_line[out_idx++] = '\t'; }
+			for(i = 0; i < spacestoadd; i++) { out_line[out_idx++] = ' '; }
+			
+			// Reset counter
+			blankstohandle = 0;
+		}
+
+		// If tab or space, store count of blanks. Otherwise, pass directly to output.
+		if (c == '\t')
+		{
+			blankstohandle += (tabsize - (in_idx % tabsize));
+		}
+		else if (c == ' ')
+		{		
+			blankstohandle++;
+		}
+		else
+		{
+			idx_lastnonblank = out_idx;
+			out_line[out_idx++] = c;
+		}
+	
+	}
+
+	out_line[out_idx] = '\0';
+	
+	return out_idx;	// return length of output string
+
 }
