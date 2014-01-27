@@ -97,7 +97,7 @@ int spacestotabs(char in_line[], int arrayLimit, char out_line[], int maxlength,
 
 	}
 
-	out_line[out_idx] = '\0';	
+	out_line[out_idx] = '\0';
 	return out_idx;				// return length of output string
 }
 
@@ -114,6 +114,7 @@ int add_entab_blanks_to_string(char line[], int idx, int tabsize, int numberofbl
 	for(i = 0; i < (numberofblanks / tabsize); i++) { line[idx++] = '\t'; }
 	for(i = 0; i < (numberofblanks % tabsize); i++) { line[idx++] = ' '; }
 
+	line[idx] = '\0';
 	return idx;		// Return new length of string
 }
 
