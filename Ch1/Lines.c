@@ -47,7 +47,7 @@ int tabstospaces(char in_line[], int arrayLimit, char out_line[], int maxlength,
 	{
 		if (in_line[in_idx] == '\t')
 		{		
-			numberofspaces = tabsize - (in_idx % tabsize);
+			numberofspaces = columns_to_next_tab(in_idx, tabsize);
 			for(spaceiterator = 0; spaceiterator < numberofspaces; spaceiterator++)
 			{
 				out_line[out_idx++] = ' ';
@@ -86,7 +86,7 @@ int spacestotabs(char in_line[], int arrayLimit, char out_line[], int maxlength,
 		switch(c)
 		{
 			case '\t':
-				blankstohandle += (tabsize - (in_idx % tabsize));
+				blankstohandle += columns_to_next_tab(in_idx, tabsize);
 				break;
 			case ' ':
 				blankstohandle++;
@@ -104,9 +104,8 @@ int spacestotabs(char in_line[], int arrayLimit, char out_line[], int maxlength,
 int add_entab_blanks_to_string(char line[], int idx, int tabsize, int numberofblanks)
 {
 	int blankstonexttab, i;
-
 	// Handle (possibly) odd number of columns in first tab
-	if(numberofblanks >= (blankstonexttab = tabsize - (idx % tabsize)))
+	if(numberofblanks >= (blankstonexttab = columns_to_next_tab(idx, tabsize)))
 	{
 		line[idx++] = '\t';
 		numberofblanks -= blankstonexttab;
@@ -116,4 +115,9 @@ int add_entab_blanks_to_string(char line[], int idx, int tabsize, int numberofbl
 	for(i = 0; i < (numberofblanks % tabsize); i++) { line[idx++] = ' '; }
 
 	return idx;		// Return new length of string
+}
+
+int columns_to_next_tab(int current_index, int tabsize)
+{
+	return (tabsize - (current_index % tabsize));
 }
