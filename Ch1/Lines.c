@@ -67,14 +67,9 @@ int tabstospaces(char in_line[], int arrayLimit, char out_line[], int maxlength,
 
 int spacestotabs(char in_line[], int arrayLimit, char out_line[], int maxlength, short tabsize)
 {
-	
-	int in_idx;
-	int out_idx = 0;
+
 	char c;
-	int blankstohandle = 0;
-	int spacestoadd, tabstoadd, blankstonexttab;
-	int i;
-	int idx_lastnonblank = 0;
+	int in_idx, out_idx = 0, i, blankstohandle = 0, spacestoadd, tabstoadd, blankstonexttab, idx_lastnonblank = 0;
 	
 	for(in_idx = 0; ((in_idx < arrayLimit) && (out_idx < (maxlength - 1))); in_idx++)
 	{
