@@ -78,11 +78,12 @@ int spacestotabs(char in_line[], int arrayLimit, char out_line[], int maxlength,
 		if(blankstohandle > 0 && ((c != '\t' && c != ' ') || (in_idx == (arrayLimit - 1))))
 		{
 			// Process optimised blanks into line and set index to new length of line (i.e. next write position)
-			out_idx = add_entab_blanks_to_string(out_line, out_idx, tabsize, blankstohandle);			
+			out_idx = add_entab_blanks_to_string(out_line, out_idx, (maxlength - 1), tabsize, blankstohandle);			
 			blankstohandle = 0;		// Reset counter
 		}
 
 		// If tab or space, store count of blanks. Otherwise, pass directly to output.
+		
 		switch(c)
 		{
 			case '\t':
@@ -92,27 +93,39 @@ int spacestotabs(char in_line[], int arrayLimit, char out_line[], int maxlength,
 				blankstohandle++;
 				break;
 			default:
-				out_line[out_idx++] = c;
+				if (out_idx < (maxlength - 1))
+				{
+					out_line[out_idx++] = c;
+				}
 		}
-
 	}
 
 	out_line[out_idx] = '\0';
 	return out_idx;				// return length of output string
 }
 
-int add_entab_blanks_to_string(char line[], int idx, int tabsize, int numberofblanks)
+int add_entab_blanks_to_string(char line[], int idx, int maxlength, int tabsize, int numberofblanks)
 {
 	int blankstonexttab, i;
-	// Handle (possibly) odd number of columns in first tab
-	if(numberofblanks >= (blankstonexttab = columns_to_next_tab(idx, tabsize)))
+
+	if (idx < (maxlength - 1))
 	{
-		line[idx++] = '\t';
-		numberofblanks -= blankstonexttab;
+		// Handle (possibly) odd number of columns in first tab
+		if(numberofblanks >= (blankstonexttab = columns_to_next_tab(idx, tabsize)))
+		{
+			line[idx++] = '\t';
+			numberofblanks -= blankstonexttab;
+		}
+		// Deal with rest of required blanks
+		for(i = 0; i < (numberofblanks / tabsize) && idx < (maxlength - 1); i++)
+		{
+			line[idx++] = '\t';
+		}
+		for(i = 0; i < (numberofblanks % tabsize) && idx < (maxlength - 1); i++)
+		{
+			line[idx++] = ' ';
+		}
 	}
-	// Deal with rest of required blanks
-	for(i = 0; i < (numberofblanks / tabsize); i++) { line[idx++] = '\t'; }
-	for(i = 0; i < (numberofblanks % tabsize); i++) { line[idx++] = ' '; }
 
 	line[idx] = '\0';
 	return idx;		// Return new length of string
