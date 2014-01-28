@@ -83,7 +83,6 @@ int spacestotabs(char in_line[], int arrayLimit, char out_line[], int maxlength,
 		}
 
 		// If tab or space, store count of blanks. Otherwise, pass directly to output.
-		
 		switch(c)
 		{
 			case '\t':
