@@ -35,6 +35,38 @@ int trimline(char line[], int arrayLength)
 	return arrayPosition;
 }
 
+int columns_to_next_tab(int current_index, int tabsize)
+{
+	return (tabsize - (current_index % tabsize));
+}
+
+int add_entab_blanks_to_string(char line[], int idx, int maxlength, int tabsize, int numberofblanks)
+{
+	int blankstonexttab, i;
+
+	if (idx < (maxlength - 1))
+	{
+		// Handle (possibly) odd number of columns in first tab
+		if(numberofblanks >= (blankstonexttab = columns_to_next_tab(idx, tabsize)))
+		{
+			line[idx++] = '\t';
+			numberofblanks -= blankstonexttab;
+		}
+		// Deal with rest of required blanks
+		for(i = 0; i < (numberofblanks / tabsize) && idx < (maxlength - 1); i++)
+		{
+			line[idx++] = '\t';
+		}
+		for(i = 0; i < (numberofblanks % tabsize) && idx < (maxlength - 1); i++)
+		{
+			line[idx++] = ' ';
+		}
+	}
+
+	line[idx] = '\0';
+	return idx;		// Return new length of string
+}
+
 int tabstospaces(char in_line[], int arrayLimit, char out_line[], int maxlength, short tabsize)
 {
 
@@ -103,34 +135,55 @@ int spacestotabs(char in_line[], int arrayLimit, char out_line[], int maxlength,
 	return out_idx;				// return length of output string
 }
 
-int add_entab_blanks_to_string(char line[], int idx, int maxlength, int tabsize, int numberofblanks)
+int foldline(char in_line[], int in_length, char out_line[], int maxlength, int maxlinewidth)
 {
-	int blankstonexttab, i;
+	int current_line_start = 0;
+	int targetted_line_end = 0;
+	int actual_line_end = 0;
+	int out_idx = 0;
+	int in_idx = 0;
 
-	if (idx < (maxlength - 1))
+	while (current_line_start < in_length)		// Really not sure about this loop condition... should it actual resolve in relation to [1] below
 	{
-		// Handle (possibly) odd number of columns in first tab
-		if(numberofblanks >= (blankstonexttab = columns_to_next_tab(idx, tabsize)))
+		// get current point we think we should break a line at
+		targetted_line_end = current_line_start + maxlinewidth;
+
+		if (targetted_line_end >= in_length)		// [1] as referenced above
 		{
-			line[idx++] = '\t';
-			numberofblanks -= blankstonexttab;
+			// copy all remaining characters to output string and end
+			for(in_idx = current_line_start; in_idx < in_length && (out_idx < (maxlength - 1)); in_idx++)
+			{
+				if ((in_idx > current_line_start) || (in_line[in_idx] != ' '))
+				{
+					out_line[out_idx++] = in_line[in_idx];
+				}
+			}
+			current_line_start = in_length;
 		}
-		// Deal with rest of required blanks
-		for(i = 0; i < (numberofblanks / tabsize) && idx < (maxlength - 1); i++)
+		else
 		{
-			line[idx++] = '\t';
+			actual_line_end = targetted_line_end;
+			// step backwards if we haven't found a space (by a set max number of characters)
+			for(actual_line_end = targetted_line_end; (actual_line_end >= (targetted_line_end - 10)) && in_line[actual_line_end] != ' '; actual_line_end--) { }
+
+			for (in_idx = current_line_start; in_idx < actual_line_end && (out_idx < (maxlength - 1)); in_idx++)
+			{
+				if ((in_idx > current_line_start) || (in_line[in_idx] != ' '))
+				{
+					out_line[out_idx++] = in_line[in_idx];
+				}
+			}
+
+			if (out_idx < (maxlength - 1) && (in_idx < (in_length - 1)))
+			{
+				out_line[out_idx++] = '\n';
+			}
+
+			current_line_start = actual_line_end;
 		}
-		for(i = 0; i < (numberofblanks % tabsize) && idx < (maxlength - 1); i++)
-		{
-			line[idx++] = ' ';
-		}
+
 	}
 
-	line[idx] = '\0';
-	return idx;		// Return new length of string
-}
-
-int columns_to_next_tab(int current_index, int tabsize)
-{
-	return (tabsize - (current_index % tabsize));
+	out_line[out_idx] = '\0';
+	return out_idx;		// return length of output string	
 }
