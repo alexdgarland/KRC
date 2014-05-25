@@ -4,9 +4,7 @@
 #define CHAR_ARRAY_LENGTH 1000
 #define MIN_LINE_LENGTH_TO_PRINT 81
 
-int getline(char outputString[], int arrayLimit);
-
-main()
+void rungetlineslongerthan()
 {
 	char currentLine[CHAR_ARRAY_LENGTH];
 	int currentLength;

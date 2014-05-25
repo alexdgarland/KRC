@@ -7,16 +7,14 @@
 
 void FlipTruthValue(int *CurrentValue);		// forward declaration
 
-int main()
+void runstripcomments()
 {
 	int length;
-	char currentLine[MAX_LENGTH];	
+	char* currentLine = getemptystring(MAX_LENGTH);	
 	int in_line_comment = FALSE;
 	int in_block_comment = FALSE;
 	int in_quote = FALSE;
 	int i;
-	
-	init_string(currentLine, MAX_LENGTH);
 	
 	while ((length = getline(currentLine, MAX_LENGTH)) != 0)
 	{

@@ -8,7 +8,7 @@ void copy(char to[], char from[]);
 void RemoveNewLine(char s[], int lim);
 
 /* print longest input line */
-main()
+void rungetlongestline()
 {
 	int len;				/* current line length */
 	int max;				/* maximum length seen so far */
@@ -29,7 +29,6 @@ main()
 		RemoveNewLine(longest, max);
 		printf("Longest line: \"%s\\n\" (length %d)", longest, max);
 	}
-	return 0;
 }
 
 /* copy: copy 'from' into 'to'; assume 'to' is big enough */

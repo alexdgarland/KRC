@@ -12,7 +12,7 @@ float tofahr(float celsius)
 	return (celsius * (9.0/5.0)) + 32.0;
 }
 
-print_f_to_c()
+void print_f_to_c()
 {
 	float fahr;
 	
@@ -31,7 +31,7 @@ print_f_to_c()
 	}
 }
 
-print_c_to_f()
+void print_c_to_f()
 {
 	float celsius;
 	
