@@ -2,30 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "Lines.h"
-#include "Lines_TESTS.h"
+#include "Tests.h"
 
-void RunTests()
-{
-	ResultTracker tracker = {0, 0, 0};
-
-	printf("\nRunning unit tests...\n");
-	
-	// Add call to each individual test in turn here
-	Test_positionoflastspace(&tracker);
-	Test_isblank(&tracker);
-	Test_trimline(&tracker);
-	Test_foldline(&tracker);
-	Test_reverse(&tracker);
-
-	// Get summary results
-	printf	(
-			"\nNumber of tests run: %d, passed: %d, failed: %d\n",
-			tracker.TotalTestCount, 
-			tracker.PassCount,
-			tracker.FailCount
-			);
-
-}
 
 void EqualityTest_Int(int ExpectedResult, int ActualResult, ResultTracker* tracker)
 {
@@ -42,6 +20,7 @@ void EqualityTest_Int(int ExpectedResult, int ActualResult, ResultTracker* track
 		(*tracker).FailCount++;
 	}
 }
+
 
 void EqualityTest_String(char* ExpectedResult, char* ActualResult, ResultTracker* tracker)
 {
@@ -60,6 +39,7 @@ void EqualityTest_String(char* ExpectedResult, char* ActualResult, ResultTracker
 	}
 }
 
+
 void Test_positionoflastspace(ResultTracker* tracker)
 {
 	printf("\nTesting function \"Position of last space\"\n");
@@ -69,6 +49,7 @@ void Test_positionoflastspace(ResultTracker* tracker)
 	EqualityTest_Int(0, positionoflastspace(" Lets_see_if_this_one_tricks_you"), tracker);
 }
 
+
 void Test_isblank(ResultTracker* tracker)
 {
 	printf("\nTesting function \"Is blank\"\n");
@@ -76,6 +57,7 @@ void Test_isblank(ResultTracker* tracker)
 	EqualityTest_Int(1, isblank(' '), tracker);
 	EqualityTest_Int(1, isblank('\t'), tracker);
 }
+
 
 void Test_trimline(ResultTracker* tracker)
 {
@@ -97,26 +79,27 @@ void Test_trimline(ResultTracker* tracker)
 	EqualityTest_String("Hello world", testline2, tracker);
 }
 
+
 void Test_foldline(ResultTracker* tracker)
 {
-	int max_length = 1000;
-	char* output = getemptystring(max_length);
+	InputOutputPair p = { getnewstring("There is an end"), getemptystring(20) };
 
 	printf("\nTesting function \"Fold line\"\n");
 
-	foldline("There is an end", output, max_length, 5);
-	EqualityTest_String("There\nis an\nend", output, tracker);
+	foldline(p, MAX_LINE_LENGTH, 5);
+	EqualityTest_String("There\nis an\nend", p.OutLine, tracker);
 
-	free(output);
+	FreeInputOutputPair(p);
 }
+
 
 void Test_reverse(ResultTracker* tracker)
 {
-	char* output = getemptystring(100);
+	InputOutputPair p = { getnewstring("Hello world"), getemptystring(100) };
 
 	printf("\nTesting function \"Reverse string\"\n");
 
-	EqualityTest_String("dlrow olleH", reversestring(output, "Hello world"), tracker);
+	EqualityTest_String("dlrow olleH", reversestring(p), tracker);
 
-	free(output);
+	FreeInputOutputPair(p);
 }
