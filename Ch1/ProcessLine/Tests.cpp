@@ -50,12 +50,12 @@ void Test_positionoflastspace(ResultTracker* tracker)
 }
 
 
-void Test_isblank(ResultTracker* tracker)
+void Test_IsBlank(ResultTracker* tracker)
 {
 	printf("\nTesting function \"Is blank\"\n");
-	EqualityTest_Int(0, isblank('H'), tracker);
-	EqualityTest_Int(1, isblank(' '), tracker);
-	EqualityTest_Int(1, isblank('\t'), tracker);
+	EqualityTest_Int(0, IsBlank('H'), tracker);
+	EqualityTest_Int(1, IsBlank(' '), tracker);
+	EqualityTest_Int(1, IsBlank('\t'), tracker);
 }
 
 
@@ -63,8 +63,8 @@ void Test_trimline(ResultTracker* tracker)
 {
 	// Function under test is an in-place operation
 	// so need to create input as mutables, not string literal constants.
-	char* testline1 = strncpy(getemptystring(100), "Hello     ", 100);
-	char* testline2 = strncpy(getemptystring(100), "Hello world     \n", 100);
+	char* testline1 = strncpy(GetEmptyString(100), "Hello     ", 100);
+	char* testline2 = strncpy(GetEmptyString(100), "Hello world     \n", 100);
 
 	printf("\nTesting function \"Trim line\"\n");
 
@@ -82,24 +82,24 @@ void Test_trimline(ResultTracker* tracker)
 
 void Test_foldline(ResultTracker* tracker)
 {
-	InputOutputPair p = { getnewstring("There is an end"), getemptystring(20) };
+	InOutLinePair p = { GetNewString("There is an end"), GetEmptyString(20) };
 
 	printf("\nTesting function \"Fold line\"\n");
 
 	foldline(p, MAX_LINE_LENGTH, 5);
 	EqualityTest_String("There\nis an\nend", p.OutLine, tracker);
 
-	FreeInputOutputPair(p);
+	FreeInOutLinePair(p);
 }
 
 
 void Test_reverse(ResultTracker* tracker)
 {
-	InputOutputPair p = { getnewstring("Hello world"), getemptystring(100) };
+	InOutLinePair p = { GetNewString("Hello world"), GetEmptyString(100) };
 
 	printf("\nTesting function \"Reverse string\"\n");
 
 	EqualityTest_String("dlrow olleH", reversestring(p), tracker);
 
-	FreeInputOutputPair(p);
+	FreeInOutLinePair(p);
 }

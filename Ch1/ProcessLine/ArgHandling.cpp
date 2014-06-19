@@ -11,7 +11,7 @@ short TryParseIntArg(char* InputArg, int* Output)
 	This function checks whether the input string is too long to be an integer, or has any non-numeric characters.
 	If it does, it sets the numeric output to zero and returns false.
 	Otherwise, we've done a partial/ incomplete check that it's parseable to an int
-	so performs the conversion, assigns to the outpit and returns true.
+	so performs the conversion, assigns to the output and returns true.
 	Almost certainly there are better standard functions in C if we were writing production code...
 	this is just for practice/ learning purposes :-)
 	*/
@@ -71,18 +71,3 @@ char UpperChar(char InChar)
 }
 
 
-void ReportBadArguments()
-{
-	printf("Invalid or missing arguments.\n");
-	ListValidArguments(USE_DEFAULT);
-}
-
-
-void ListValidArguments()
-{
-	printf("Valid arguments are as follows:\n");
-	
-	printf("\n\"-V\" - Output this list of valid command line arguments for the program.");
-	printf("\n\"-X\" - Run unit tests for internal functions.");
-	printf("\n");
-}

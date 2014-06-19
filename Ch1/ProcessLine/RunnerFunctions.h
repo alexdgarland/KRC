@@ -2,12 +2,33 @@
 
 	#define RunnerFunctions_INCLUDED
 
-	#define DEFAULT_MAX_WRAP_WIDTH 40
-	#define DEFAULT_TABSIZE 4
-	#define DEFAULT_MIN_LENGTH_TO_PRINT 80
+	#define BADARGS_TRIGGER 'Z'
+	#define PROCESSLINE_GETOPT_OPTIONS "m:n:"
 
-	void TryRunFlaggedMethod(char FlagArg, int NumericArgument);
-	
+	typedef struct NumericArgument
+	{
+		char*	Description;
+		int		DefaultValue;
+	} NumericArgument;
+
+	typedef struct RunMode
+	{
+		char				TriggerCharacter;
+		char*				VerboseAlias;
+		void*				RunnerFunction;
+		char*				ModeDescription;
+		NumericArgument*	NumericArgDetails;
+	} RunMode;
+
+	NumericArgument* GetNewNumericArgDetails(char* Description, int DefaultValue);
+	RunMode* GetNewRunMode (char TriggerCharacter, char* VerboseAlias, void* RunnerFunction, char* ModeDescription, NumericArgument* NumericArgDetails, int*CurrentModeCount);
+	RunMode** GetGlobalModeList();
+	RunMode* GetSelectedRunMode(char* ModeArgument);
+	RunMode* GetRunModeByTriggerChar(char TriggerChar);
+	RunMode* GetRunModeByVerboseAlias(char* VerboseAlias);
+
+	// void TryRunFlaggedMethod(char FlagArg, int NumericArgument);
+
 	void RunReverse();
 	void RunWrapText(int MaxWrapWidth);
 	void RunEntab(int TabSize);
@@ -18,8 +39,9 @@
 	void RunGetLinesOfMinimumLength(int MinLength);
 	void RunStripComments();
 
-	void FlipTruthValue(int *CurrentValue);
+	void ReportBadArgsAndExit();
+	void ListValidArguments();
 
-	void AssignDefaultIfRequired(int* ActualArgument, int DefaultValue);
+	void FlipTruthValue(int *CurrentValue);
 
 #endif

@@ -5,23 +5,23 @@
 
 /*		Generic line/ string handling functions for use in various programs		*/
 
-InputOutputPair GetInputOutPutPair()
+InOutLinePair GetInOutLinePair()
 {
-	InputOutputPair pair;
-	pair.InLine = getemptystring(MAX_LINE_LENGTH);
-	pair.OutLine = getemptystring(MAX_LINE_LENGTH);
+	InOutLinePair pair;
+	pair.InLine = GetEmptyString(MAX_LINE_LENGTH);
+	pair.OutLine = GetEmptyString(MAX_LINE_LENGTH);
 	return pair;
 }
 
 
-void FreeInputOutputPair(InputOutputPair p)
+void FreeInOutLinePair(InOutLinePair p)
 {
 	free(p.InLine);
 	free(p.OutLine);
 }
 
 
-int getline(char outputString[], int arrayLimit)
+int GetLine(char outputString[], int arrayLimit)
 {
     int c, i;
         
@@ -38,24 +38,24 @@ int getline(char outputString[], int arrayLimit)
 }
 
 
-char* getemptystring(int requiredlength)
+char* GetEmptyString(int RequiredLength)
 {
-	char* s = (char*)malloc(requiredlength + 1);
+	char* s = (char*)malloc(RequiredLength + 1);
 	int i;
-	for(i = 0; i<=requiredlength; i++) { s[i]='\0'; }
+	for(i = 0; i<=RequiredLength; i++) { s[i]='\0'; }
 	return s;
 }
 
 
-char* getnewstring(char* inputtext)
+char* GetNewString(char* InputText)
 {
-	char* s = (char*)malloc(strlen(inputtext) + 1);
-	strcpy(s, inputtext);
+	char* s = (char*)malloc(strlen(InputText) + 1);
+	strcpy(s, InputText);
 	return s;
 }
 
 
-int isblank(char c)
+int IsBlank(char c)
 {
 	// Evaluates input against standard definition of "blank" chars
 	return ((c == ' ') || (c == '\t'));
@@ -73,7 +73,7 @@ int trimline(char* line)
 	int pos;	// Current position in array
 	// Works backward from the end, leaving NULLs, until it reaches something that's not a blank
 	// (or gets all the way to the beginning without finding one)
-	for (pos = (strlen(line) - 1); (pos >= 0) && (isblank(line[pos]) || line[pos] == '\n'); line[pos--] = '\0') { }
+	for (pos = (strlen(line) - 1); (pos >= 0) && (IsBlank(line[pos]) || line[pos] == '\n'); line[pos--] = '\0') { }
 	// ...then returns the length of the trimmed string
 	return pos++;
 }
@@ -111,7 +111,7 @@ int add_entab_blanks_to_string(char line[], int idx, int maxlength, int tabsize,
 }
 
 
-char* tabstospaces(InputOutputPair p, short tabsize)
+char* tabstospaces(InOutLinePair p, short tabsize)
 {
 
 	int in_idx;
@@ -143,7 +143,7 @@ char* tabstospaces(InputOutputPair p, short tabsize)
 }
 
 
-char* spacestotabs(InputOutputPair p, short tabsize)
+char* spacestotabs(InOutLinePair p, short tabsize)
 {
 	char c;
 	int in_idx, out_idx = 0, blankstohandle = 0;
@@ -154,7 +154,7 @@ char* spacestotabs(InputOutputPair p, short tabsize)
 		c = p.InLine[in_idx];
 
 		// If run of blanks or the line as a whole ends, output stored blanks in correct format
-		if(blankstohandle > 0 && (!isblank(c) || (in_idx == (in_length - 1))))
+		if(blankstohandle > 0 && (!IsBlank(c) || (in_idx == (in_length - 1))))
 		{
 			// Process optimised blanks into line and set index to new length of line (i.e. next write position)
 			out_idx = add_entab_blanks_to_string(p.OutLine, out_idx, (MAX_LINE_LENGTH - 1), tabsize, blankstohandle);			
@@ -183,7 +183,7 @@ char* spacestotabs(InputOutputPair p, short tabsize)
 }
 
 
-char* foldline(InputOutputPair p, int maxlength, int maxlinewidth)
+char* foldline(InOutLinePair p, int maxlength, int maxlinewidth)
 {
 	int current_line_start = 0;
 	int targetted_line_end = 0;
@@ -195,7 +195,7 @@ char* foldline(InputOutputPair p, int maxlength, int maxlinewidth)
 	while (current_line_start < in_length)		// Really not sure about this loop condition... should it actual resolve in relation to [1] below
 	{
 		// Scroll past any leading blanks
-		for ( ; isblank(p.InLine[current_line_start]); current_line_start++);
+		for ( ; IsBlank(p.InLine[current_line_start]); current_line_start++);
 
 		// get current point we think we should break a line at
 		targetted_line_end = current_line_start + maxlinewidth;
@@ -206,7 +206,7 @@ char* foldline(InputOutputPair p, int maxlength, int maxlinewidth)
 			// copy all remaining characters to output string and end
 			for(in_idx = current_line_start; in_idx < in_length && (out_idx < (maxlength - 1)); in_idx++)
 			{
-				if ((in_idx > current_line_start) || (!isblank(p.InLine[in_idx])))
+				if ((in_idx > current_line_start) || (!IsBlank(p.InLine[in_idx])))
 				{
 					p.OutLine[out_idx++] = p.InLine[in_idx];
 				}
@@ -220,8 +220,8 @@ char* foldline(InputOutputPair p, int maxlength, int maxlinewidth)
 			// Step backwards if we haven't found a space (by at most 25% of the total max width)
 			for(actual_line_end = targetted_line_end;
 				(actual_line_end >= (targetted_line_end - (maxlinewidth/4)))
-					&& (!isblank(p.InLine[actual_line_end]))
-					&& (!isblank(p.InLine[actual_line_end+1]));
+					&& (!IsBlank(p.InLine[actual_line_end]))
+					&& (!IsBlank(p.InLine[actual_line_end+1]));
 				actual_line_end--) { }
 
 			for (in_idx = current_line_start; in_idx < actual_line_end && (out_idx < (maxlength - 1)); in_idx++)
@@ -257,7 +257,7 @@ int positionoflastspace(char line[])
 }
 
 
-char* reversestring(InputOutputPair p)
+char* reversestring(InOutLinePair p)
 {
 	int i;
 	int length = strlen(p.InLine);

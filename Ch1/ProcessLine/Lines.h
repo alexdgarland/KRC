@@ -8,23 +8,23 @@
 	{
 		char* InLine;
 		char* OutLine;
-	} InputOutputPair;
+	} InOutLinePair;
 
-	InputOutputPair GetInputOutPutPair();
-	void FreeInputOutputPair(InputOutputPair p);
+	InOutLinePair GetInOutLinePair();
+	void FreeInOutLinePair(InOutLinePair p);
 
-	int getline(char outputString[], int arrayLimit);
-	int isblank(char c);
+	int GetLine(char outputString[], int arrayLimit);
+	int IsBlank(char c);
 	int trimline(char line[]);
 	int columns_to_next_tab(int current_index, int tabsize);
 	int add_entab_blanks_to_string(char line[], int idx, int maxlength, int tabsize, int numberofblanks);
-	char* tabstospaces(InputOutputPair p, short tabsize);
-	char* spacestotabs(InputOutputPair p, short tabsize);
-	char* foldline(InputOutputPair p, int maxlength, int maxlinewidth);
+	char* tabstospaces(InOutLinePair p, short tabsize);
+	char* spacestotabs(InOutLinePair p, short tabsize);
+	char* foldline(InOutLinePair p, int maxlength, int maxlinewidth);
 	int positionoflastspace(char line[]);
-	char* getemptystring(int requiredlength);
-	char* reversestring(InputOutputPair p);
-	char* getnewstring(char* inputtext);
+	char* GetEmptyString(int requiredlength);
+	char* reversestring(InOutLinePair p);
+	char* GetNewString(char* inputtext);
 	void Copy(char to[], char from[]);
 	void RemoveNewLine(char* s);
 
