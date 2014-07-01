@@ -64,7 +64,7 @@ RunMode** GetGlobalModeList()
 	
 		RunMode* MinLengthMode = GetNewRunMode('M', "Minimum", &RunGetLinesOfMinimumLength,	"Gets lines of a minimum length.", GetNewNumericArgDetails("Sets minimum line length.", 80), &CurrentModeCount);
 		RunMode* LongestMode = GetNewRunMode('L', "Longest", &RunGetLongestLine, "Returns longest line from set of lines entered.", NoNumericArg, &CurrentModeCount);
-		RunMode* ListValidMode = GetNewRunMode('V', "ValidArgs", &ListValidArguments, "Provide a list of valid command line arguments for this program.", NoNumericArg, &CurrentModeCount);
+		RunMode* ListValidMode = GetNewRunMode('V', "ValidArgs", &ListValidArguments, "List valid command line arguments for this program.", NoNumericArg, &CurrentModeCount);
 		RunMode* UnitTestMode =	GetNewRunMode('U', "UnitTest", &RunTests, "Run unit tests for internal functions", NoNumericArg, &CurrentModeCount);
 		RunMode* EndOfList = GetNewRunMode(BADARGS_TRIGGER, "BadArgs", &ReportBadArgsAndExit, "Non-valid arguments passed!", NoNumericArg, &CurrentModeCount);
 
@@ -94,6 +94,11 @@ RunMode** GetGlobalModeList()
 
 RunMode* GetSelectedRunMode(char* ModeArgument)
 {
+	if (ModeArgument == NULL)
+	{
+		return GetRunModeByTriggerChar(BADARGS_TRIGGER);
+	}
+
 	switch(strlen(ModeArgument))
 	{
 		case 0 :
@@ -134,7 +139,7 @@ RunMode* GetRunModeByVerboseAlias(char* VerboseAlias)
 	while(TRUE)
 	{
 		mode = ModeList[i++];
-		if((mode->VerboseAlias == VerboseAlias) || mode->TriggerCharacter == BADARGS_TRIGGER)
+		if((strcmp(mode->VerboseAlias, VerboseAlias) == 0) || mode->TriggerCharacter == BADARGS_TRIGGER)
 		{
 			return mode;
 		}
@@ -179,26 +184,6 @@ void RunWithoutNumericArg(RunMode* SelectedRunMode)
 	}
 }
 
-
-void TryRunFlaggedMethod(char FlagArg, int NumericArgument)
-{
-	RunMode** ModeArray = GetGlobalModeList();
-	void (*selectedFunction)();
-
-	int currentPosition = 0;
-	RunMode* currentMode;
-	while(TRUE)
-	{
-		currentMode = ModeArray[currentPosition++];
-		char currentTrigger = currentMode->TriggerCharacter;
-		if((currentTrigger == FlagArg) || currentTrigger == BADARGS_TRIGGER)	/*	BADARGS_TRIGGER should always end the list!!! - how can we enforce this? ...... */
-		{
-			selectedFunction = (void(*)())(currentMode->RunnerFunction);
-			selectedFunction();
-			exit(0);
-		}
-	}
-}
 
 
 void RunReverse()

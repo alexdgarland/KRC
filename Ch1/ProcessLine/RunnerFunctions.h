@@ -27,7 +27,8 @@
 	RunMode* GetRunModeByTriggerChar(char TriggerChar);
 	RunMode* GetRunModeByVerboseAlias(char* VerboseAlias);
 
-	// void TryRunFlaggedMethod(char FlagArg, int NumericArgument);
+	void RunWithNumericArg(RunMode* SelectedRunMode, int NumericCLIArg);
+	void RunWithoutNumericArg(RunMode* SelectedRunMode);
 
 	void RunReverse();
 	void RunWrapText(int MaxWrapWidth);

@@ -31,9 +31,9 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 // if you are not using precompiled headers then include these lines:
-//#include <windows.h>
-//#include <stdio.h>
-//#include <tchar.h>
+// #include <windows.h>		/* Already included due to use of MFC AG 01/07/2014	*/
+#include <stdio.h>
+#include <tchar.h>
 ///////////////////////////////////////////////////////////////////////////////
 
 
