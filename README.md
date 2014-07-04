@@ -9,8 +9,6 @@ a) May be massively over-engineered simply to try out something that I find inte
 
 b) Are unlikely to be completely idiomatic in any single version of C/C++.
 
-c) May contain rookie errors.
-
-If anyone reading this does have anything constructive to add, feel free to leave a comment.
+c) May contain rookie errors (although hopefully I will be clearing these up as I go!)
 
 AG 04/07/2014
