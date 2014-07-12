@@ -10,9 +10,6 @@
     #define ArgHandling_INCLUDED
 
     #define USE_DEFAULT -1
-    #define TRUE 1
-    #define FALSE 0
-    #define BADARGS_EXITCODE -1
 
     short TryParseIntArg(char* InputArg, int* Output);
     short IsNumericChar(char input);

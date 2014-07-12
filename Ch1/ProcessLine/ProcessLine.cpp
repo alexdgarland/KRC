@@ -1,9 +1,10 @@
+#include <stdint.h>
+#include <string>
 
 #include "ProcessLine.h"
 #include "ArgHandling.h"
-#include "RunnerFunctions.h"
-#include <stdint.h>
-#include <string>
+#include "RunModes.h"
+
 using std::string;
 
 void main(int argc, char* argv[])
@@ -36,7 +37,10 @@ void main(int argc, char* argv[])
         }
     }
     
-    selectedRunMode = GetSelectedRunMode(RunModeArgument);
+    if((selectedRunMode = GetSelectedRunMode(RunModeArgument)) == NO_RUNMODE)
+    {
+        ReportBadArgsAndExit();
+    };
 
     if (NumericArgument == NULL)
     {
