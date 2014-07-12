@@ -10,8 +10,9 @@
 
     typedef struct NumericArgument
     {
-        char*    Description;
-        int        DefaultValue;
+        char*   Description;
+        int     DefaultValue;
+        int     ReferenceCount;
     } NumericArgument;
 
     #define NO_NUMARG (NumericArgument*)NULL
@@ -57,7 +58,13 @@
     void RunWithNumericArg(RunMode* SelectedRunMode, int NumericCLIArg);
     void RunWithoutNumericArg(RunMode* SelectedRunMode);
 
-    void ReportBadArgsAndExit();
+    int FreeNumericArg(NumericArgument* Arg);
+    int FreeRunMode(RunMode* Mode);
+    int FreeListNode(ListNode* Node);
+    int FreeModeList(RunModeList* ModeList);
+    int FreeGlobalModeList();
+
     void ListValidArguments();
+    void ReportBadArgsAndExit();
 
 #endif

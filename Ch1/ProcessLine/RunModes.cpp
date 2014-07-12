@@ -13,6 +13,7 @@ NumericArgument* CreateNumericArg(char* Description, int DefaultValue)
     NumericArgument* NumArg = (NumericArgument*)malloc(sizeof(NumericArgument));
     NumArg->Description=GetNewString(Description);
     NumArg->DefaultValue = DefaultValue;
+    NumArg->ReferenceCount = 0;
     return NumArg;
 }
 
@@ -30,7 +31,11 @@ RunMode* CreateRunMode
     ModePtr->VerboseAlias = GetNewString(VerboseAlias);
     ModePtr->RunnerFunction = RunnerFunction;
     ModePtr->ModeDescription = GetNewString(ModeDescription);
-    ModePtr->NumericArgDetails = NumericArgDetails;    
+    ModePtr->NumericArgDetails = NumericArgDetails;
+    if (NumericArgDetails != NO_NUMARG)
+    {
+        NumericArgDetails->ReferenceCount++;    /* Allowing a crude/ non-generic form of RC memory management */
+    }
     return ModePtr;
 }
 
@@ -160,14 +165,80 @@ void RunWithoutNumericArg(RunMode* SelectedRunMode)
     }
 }
 
-
-void ReportBadArgsAndExit()
+int FreeNumericArg(NumericArgument* Arg)
 {
-    printf("\n**********************   INVALID OR MISSING ARGUMENTS   **********************\n\n");
-    ListValidArguments();
-    exit(BADARGS_EXITCODE);
+    if (Arg == NO_NUMARG)
+    {
+        return -1;
+    }
+    else
+    {
+        Arg->ReferenceCount--;
+        if(Arg->ReferenceCount == 0)    /* Check for any remaining references */
+        {
+            free(Arg->Description);
+            free(Arg);
+        }
+        return 0;
+    }
 }
 
+int FreeRunMode(RunMode* Mode)
+{
+    if(Mode == NO_RUNMODE)
+    {
+        return -1;
+    }
+    else
+    {
+        FreeNumericArg(Mode->NumericArgDetails);
+        free(Mode->ModeDescription);
+        free(Mode);
+        return 0;
+    }
+}
+
+int FreeListNode(ListNode* Node)
+{
+    if (Node == NO_LISTNODE)
+    {
+        return -1;
+    }
+    else
+    {
+        FreeRunMode(Node->RunMode);
+        free(Node);
+        return 0;
+    }
+}
+
+int FreeModeList(RunModeList* ModeList)
+{
+    ListNode* CurrentNode = NO_LISTNODE;
+    ListNode* NextNode = NO_LISTNODE;
+
+    if(ModeList == NO_MODELIST)
+    {
+        return -1;
+    }
+    else
+    {
+        do
+        {
+            CurrentNode = (NextNode == NO_LISTNODE) ? ModeList->First : NextNode;
+            NextNode = (CurrentNode == ModeList->Last) ? NO_LISTNODE : CurrentNode->Next;
+            FreeListNode(CurrentNode);
+        }
+        while(NextNode != NO_LISTNODE);
+        free(ModeList);
+        return 0;
+    }
+}
+
+int FreeGlobalModeList()
+{
+    return FreeModeList(GlobalModeList);
+}
 
 void ListValidArguments()
 {
@@ -196,4 +267,12 @@ void ListValidArguments()
         printf("\n");
     }
     while(CurrentNode != ModeList->Last);
+}
+
+void ReportBadArgsAndExit()
+{
+    printf("\n**********************   INVALID OR MISSING ARGUMENTS   **********************\n\n");
+    ListValidArguments();
+    FreeGlobalModeList();
+    exit(BADARGS_EXITCODE);
 }
