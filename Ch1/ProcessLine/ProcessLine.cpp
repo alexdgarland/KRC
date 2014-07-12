@@ -55,4 +55,6 @@ void main(int argc, char* argv[])
         ReportBadArgsAndExit();
     }
 
+    FreeGlobalModeList();
+    exit(0);
 }
