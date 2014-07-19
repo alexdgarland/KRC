@@ -1,3 +1,0 @@
-Hello world.
-This is a file with some text in.
-It can be used to test line-processing functions.
