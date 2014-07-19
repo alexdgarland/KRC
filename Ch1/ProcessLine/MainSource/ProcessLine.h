@@ -6,7 +6,7 @@
         #include <getopt.h>
     #endif
     #ifdef _WIN32
-        #include "XGetopt\XGetopt.h"
+        #include "..\WindowsBuild\XGetopt\XGetopt.h"
         #include <string>
     #endif
     #include <stdio.h>
