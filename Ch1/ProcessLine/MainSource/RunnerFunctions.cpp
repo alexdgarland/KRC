@@ -84,15 +84,10 @@ void RunTests()
 void RunTrim()
 {
     char* line = GetEmptyString(MAX_LINE_LENGTH);
-    
     while ((GetLine(line, MAX_LINE_LENGTH)) > 0)
     {
-        if (trimline(line) > 0)
-        {
-            printf("%s\n", line);
-        }
+        if (trimline(line) > 0) { printf("%s\n", line); }
     }
-
 }
 
 
