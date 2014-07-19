@@ -6,7 +6,9 @@ My solutions to exercises from Kernighan & Richie "The C Programming Language" (
 I'm using the exercises as an opportunity to explore various features of the C language and also elements of C++.  So the solutions I provide here:
 
 a) May be massively over-engineered simply to try out something that I find interesting.
+
 b) May not be completely idiomatic in any single version of C/C++.
+
 c) May contain rookie errors (although hopefully I will be clearing these up as I go!)
 
 As of now, all non-trivial code examples are under the "ProcessLine" subfolder - https://github.com/alexdgarland/KRC/tree/master/Ch1/ProcessLine
