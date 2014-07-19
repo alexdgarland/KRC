@@ -115,8 +115,7 @@ void RunGetLongestLine()
     }
     if (max > 0)
     {
-        RemoveNewLine(longest);
-        printf("Longest line: \"%s\\n\" (length %d)", longest, max);
+        printf("Longest line: \"%s\\n\" (length %d)", RemoveNewLine(longest), max);
     }
 }
 

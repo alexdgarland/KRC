@@ -1,10 +1,4 @@
-#include <stdint.h>
-#include <string>
-
 #include "ProcessLine.h"
-#include "ArgHandling.h"
-#include "RunModes.h"
-#include "RunnerFunctions.h"
 
 #ifdef _WIN32
     using std::string;
@@ -12,7 +6,6 @@
 
 void main(int argc, char* argv[])
 {
-
     #ifdef __linux__
         const char* options;
     #endif
@@ -81,4 +74,40 @@ int PopulateModeList()
     AddRunMode('V', "ValidArgs", &ListValidArguments, "List valid command line arguments for this program.", NO_NUMARG);
     AddRunMode('U', "UnitTest", &RunTests, "Run unit tests for internal functions.", NO_NUMARG);
     return 0;
+}
+
+short TryParseIntArg(char* InputArg, int* Output)
+{
+    /*
+    This function checks whether the input string is too long to be an integer, or has any non-numeric characters.
+    If it does, it sets the numeric output to zero and returns false.
+    Otherwise, we've done a partial/ incomplete check that it's parseable to an int
+    so performs the conversion, assigns to the output and returns true.
+    Almost certainly there are better standard functions in C if we were writing production code...
+    this is just for practice/ learning purposes :-)
+    */
+    int i, in_length;
+
+    if ((in_length = (int)strlen(InputArg)) > 9)
+    {
+        *Output = '\0';
+        return FALSE;
+    }
+
+    for(i = 0; i < in_length; i++)
+    {
+        if (!IsNumericChar(InputArg[i]))
+        {
+            *Output = '\0';
+            return FALSE;
+        }
+    }
+
+    *Output = atoi(InputArg);
+    return TRUE;
+}
+
+short IsNumericChar(char input)
+{
+    return (input >= '0' && input <= '9') ? TRUE : FALSE;
 }

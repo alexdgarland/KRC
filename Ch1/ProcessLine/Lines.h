@@ -26,6 +26,6 @@
     char* reversestring(InOutLinePair p);
     char* GetNewString(char* inputtext);
     void Copy(char to[], char from[]);
-    void RemoveNewLine(char* s);
+    char* RemoveNewLine(char* s);
 
 #endif

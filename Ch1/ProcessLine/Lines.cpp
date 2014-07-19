@@ -282,12 +282,13 @@ void Copy (char to[], char from[])
     }
 }
 
-/* Remove newline from string if present */
-void RemoveNewLine(char* s)
+/* Remove newline from string if present - alters in-place and passes pointer */
+char* RemoveNewLine(char* s)
 {
     int lastchar = strlen(s) - 1;
     if (s[lastchar] == '\n')
     {
         s[lastchar] = '\0';
     }
+    return s;
 }
