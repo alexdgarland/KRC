@@ -9,7 +9,7 @@
 
     #define ArgHandling_INCLUDED
 
-    #define USE_DEFAULT -1
+    #define PROCESSLINE_GETOPT_OPTIONS "m:n:"
 
     short TryParseIntArg(char* InputArg, int* Output);
     short IsNumericChar(char input);

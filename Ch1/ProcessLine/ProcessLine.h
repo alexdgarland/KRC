@@ -2,6 +2,6 @@
 
     #define ProcessLine_INCLUDED
 
-    /*    Function prototypes go here        */
+    int PopulateModeList();
 
 #endif

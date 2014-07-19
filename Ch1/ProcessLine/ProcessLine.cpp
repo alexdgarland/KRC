@@ -4,8 +4,11 @@
 #include "ProcessLine.h"
 #include "ArgHandling.h"
 #include "RunModes.h"
+#include "RunnerFunctions.h"
 
-using std::string;
+#ifdef _WIN32
+    using std::string;
+#endif
 
 void main(int argc, char* argv[])
 {
@@ -36,11 +39,13 @@ void main(int argc, char* argv[])
                 break;
         }
     }
-    
-    if((selectedRunMode = GetSelectedRunMode(RunModeArgument)) == NO_RUNMODE)
+
+    PopulateModeList();
+
+    if((selectedRunMode = GetRunMode(RunModeArgument)) == NO_RUNMODE)
     {
         ReportBadArgsAndExit();
-    };
+    }
 
     if (NumericArgument == NULL)
     {
@@ -55,6 +60,25 @@ void main(int argc, char* argv[])
         ReportBadArgsAndExit();
     }
 
-    FreeGlobalModeList();
+    FreeModeList();
     exit(0);
+}
+
+
+int PopulateModeList()
+{
+    AddRunMode('T', "Trim", &RunTrim, "Remove trailing blanks from each line.", NO_NUMARG);
+    AddRunMode('R', "Reverse", &RunReverse, "Reverses the order of characters in each line.", NO_NUMARG);
+    AddRunMode('S', "Strip", &RunStripComments, "Strips out code comments.", NO_NUMARG);
+    NumericArgument* MaxWidthNumArg = CreateNumArg("Sets maximum line width", 40);
+    AddRunMode('W', "Wrap", &RunWrapText, "Wraps text in each line.", MaxWidthNumArg);
+    NumericArgument* SpacesPerTabNumArg = CreateNumArg("Sets number of spaces per tab", 4);
+    AddRunMode('D', "Detab", &RunDetab, "Converts tabs to spaces.", SpacesPerTabNumArg);
+    AddRunMode('E', "Entab", &RunEntab, "Converts spaces to tabs.",    SpacesPerTabNumArg);
+    NumericArgument* MinLengthNumArg = CreateNumArg("Sets minimum line length", 80);
+    AddRunMode('M', "Minimum", &RunGetLinesOfMinimumLength, "Gets lines of a minimum length.", MinLengthNumArg);
+    AddRunMode('L', "Longest", &RunGetLongestLine, "Returns longest line from set of lines entered.", NO_NUMARG);
+    AddRunMode('V', "ValidArgs", &ListValidArguments, "List valid command line arguments for this program.", NO_NUMARG);
+    AddRunMode('U', "UnitTest", &RunTests, "Run unit tests for internal functions.", NO_NUMARG);
+    return 0;
 }

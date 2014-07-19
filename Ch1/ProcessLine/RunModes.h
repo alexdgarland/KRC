@@ -3,7 +3,6 @@
     #define RunModes_INCLUDED
 
     #define BADARGS_TRIGGER 'Z'
-    #define PROCESSLINE_GETOPT_OPTIONS "m:n:"
     #define BADARGS_EXITCODE -1
 
     /*  Struct declarations */
@@ -46,14 +45,15 @@
 
     /*  Function signatures     */
 
-    NumericArgument* CreateNumericArg(char* Description, int DefaultValue);
-    RunMode* CreateRunMode (char TriggerCharacter, char* VerboseAlias, void* RunnerFunction, char* ModeDescription, NumericArgument* NumericArgDetails);
-    
-    RunModeList* GetGlobalModeList();
+    NumericArgument* CreateNumArg(char* Description, int DefaultValue);
+    ListNode* AddRunMode (
+        char TriggerCharacter, char* VerboseAlias,
+        void* RunnerFunction, char* ModeDescription,
+        NumericArgument* NumArgDetails);
 
     int MatchMode_Char(RunMode* Mode, char* ModeArgument);
     int MatchMode_Verbose(RunMode* Mode, char* ModeArgument);
-    RunMode* GetSelectedRunMode(char* ModeArgument);
+    RunMode* GetRunMode(char* ModeArgument);
 
     void RunWithNumericArg(RunMode* SelectedRunMode, int NumericCLIArg);
     void RunWithoutNumericArg(RunMode* SelectedRunMode);
@@ -61,8 +61,7 @@
     int FreeNumericArg(NumericArgument* Arg);
     int FreeRunMode(RunMode* Mode);
     int FreeListNode(ListNode* Node);
-    int FreeModeList(RunModeList* ModeList);
-    int FreeGlobalModeList();
+    int FreeModeList();
 
     void ListValidArguments();
     void ReportBadArgsAndExit();
