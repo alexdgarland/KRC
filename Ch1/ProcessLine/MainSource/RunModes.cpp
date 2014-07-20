@@ -77,7 +77,8 @@ RunMode* GetRunMode(char* ModeArgument)
     ListNode* CurrentNode = NO_LISTNODE;
 
     /*  Pick matching function  */
-    int (*MatchFunction)(RunMode*,char*) = (int(*)(RunMode*,char*))(strlen(ModeArgument) == 1 ? &MatchMode_Char : &MatchMode_Verbose);
+    void* MatchFuncPtr = strlen(ModeArgument) == 1 ? &MatchMode_Char : &MatchMode_Verbose;
+    int (*MatchFunction)(RunMode*,char*) = (int(*)(RunMode*,char*))MatchFuncPtr;
 
     do
     {
